@@ -1,17 +1,43 @@
 from app import app
+from flask import render_template
 
-@app.route('/') # www.domain.com
+todos = [
+    {
+        "id": 1,
+        "title": "title1",
+        "description": "description1",
+        "created_at": "2025-11-12 06:27:37",
+    },
+    {
+        "id": 2,
+        "title": "title2",
+        "description": "description2",
+        "created_at": "2025-11-12 06:27:37",
+    },
+    {
+        "id": 3,
+        "title": "title3",
+        "description": "description3",
+        "created_at": "2025-11-12 06:27:37",
+    }
+]
+
+@app.route("/")
 def index():
-    return "<h1>Todo index page</h1>"
+    todo_count = len(todos)
+    return render_template("index.html", todo_count=todo_count)
 
-@app.route('/tasks')
+
+@app.route("/tasks")
 def all_tasks():
-    return "<h1>List of all tasks</h1>"
-    
-@app.route('/task/<taskid>') #www.domain.com/taslk/1 - enforce an integer with: <int:task_id>
-def task(task_id):
-    return "<h1>Task detail page for task {task_id}<h1>"
+    return render_template("tasks.html")
 
-@app.route('/new-task')
-def new_task():
-    return "<h1>This is a new task</h1>"
+
+@app.route("/task/<int:task_id>")
+def task(task_id):
+    return f"<h1>Task detail page for task {task_id}</h1>"
+
+
+@app.route("/new-task")
+def create_task():
+    return render_template("new_task.html")
